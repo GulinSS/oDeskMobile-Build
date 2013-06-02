@@ -21,26 +21,17 @@
   <body ng-controller="AppCtrl">
     <div class="wrapper">
       <div class="navbar navbar-static-top">
-        <div class="navbar-inner">
-          <div class="container">
-            <button data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="brand">Angular Brunch Seed</a>
-            <div class="nav-collapse">
-              <div ng-include="'/partials/nav.html'"></div>
-            </div>
-          </div>
+        <div class="navbar-inner"><a href="#" class="brand">oDesk</a>
+          <div ng-include="'/partials/nav.html'"></div>
         </div>
       </div>
       <div class="container main-content">
-        <div ng-view></div>
-        <div>Angular Brunch seed app: v<span app-version></span></div>
+        <div ng-app="ng-app">
+          <div ng-view></div>
+        </div>
       </div>
       <div class="push"></div>
     </div>
-    <footer class="footer">
-      <div class="container">
-        <p><small><a href="https://github.com/scotch/angular-brunch-seed">angular-brunch-seed | source</a></small></p>
-      </div>
-    </footer>
     <script>
       var onDeviceReady = function() {
         angular.element(document).ready(function() {

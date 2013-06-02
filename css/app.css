@@ -7621,3 +7621,22 @@ bootstrap, so the may override it's behavior.
   text-decoration: line-through;
   color: grey;
 }
+.jobs .results .badges {
+  overflow: hidden;
+  padding: 3px;
+  background-color: #cdeacd;
+}
+.jobs .results .description {
+  padding: 3px;
+}
+.jobs .results .item {
+  display: inline-block;
+  text-align: justify;
+  max-width: 400px;
+  vertical-align: top;
+  margin: 5px 0px;
+  border: 2px solid #cdeacd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}

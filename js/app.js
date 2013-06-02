@@ -5,14 +5,10 @@ App = angular.module('app', ['ngCookies', 'ngResource', 'app.controllers', 'app.
 
 App.config([
   '$routeProvider', '$locationProvider', function($routeProvider, $locationProvider, config) {
-    $routeProvider.when('/todo', {
-      templateUrl: '/partials/todo.html'
-    }).when('/view1', {
-      templateUrl: '/partials/partial1.html'
-    }).when('/view2', {
-      templateUrl: '/partials/partial2.html'
+    $routeProvider.when('/jobs', {
+      templateUrl: '/partials/jobs.html'
     }).otherwise({
-      redirectTo: '/todo'
+      redirectTo: '/jobs'
     });
     return $locationProvider.html5Mode(false);
   }
@@ -21,7 +17,7 @@ App.config([
 /* Controllers
 */
 angular.module('app.controllers', []).controller('AppCtrl', [
-  '$scope', '$location', '$resource', '$rootScope', function($scope, $location, $resource, $rootScope) {
+  '$scope', '$location', '$resource', '$rootScope', function($scope, $location) {
     $scope.$location = $location;
     $scope.$watch('$location.path()', function(path) {
       return $scope.activeNavId = path || '/';
@@ -34,77 +30,22 @@ angular.module('app.controllers', []).controller('AppCtrl', [
       }
     };
   }
-]).controller('MyCtrl1', [
+]).controller('JobsController', [
   '$scope', function($scope) {
-    return $scope.onePlusOne = 2;
-  }
-]).controller('MyCtrl2', [
-  '$scope', function($scope) {
-    return $scope;
-  }
-]).controller('TodoCtrl', [
-  '$scope', function($scope) {
-    $scope.todos = [
-      {
-        text: "learn angular",
-        done: true
-      }, {
-        text: "build an angular app",
-        done: false
-      }
-    ];
-    $scope.addTodo = function() {
-      $scope.todos.push({
-        text: $scope.todoText,
-        done: false
-      });
-      return $scope.todoText = "";
-    };
-    $scope.remaining = function() {
-      var count;
-
-      count = 0;
-      angular.forEach($scope.todos, function(todo) {
-        return count += (todo.done ? 0 : 1);
-      });
-      return count;
-    };
-    return $scope.archive = function() {
-      var oldTodos;
-
-      oldTodos = $scope.todos;
-      $scope.todos = [];
-      return angular.forEach(oldTodos, function(todo) {
-        if (!todo.done) {
-          return $scope.todos.push(todo);
-        }
-      });
+    return $scope.findJobs = function() {
+      return console.log($scope.type);
     };
   }
 ]);
 'use strict';
 /* Directives
 */
-angular.module('app.directives', ['app.services']).directive('appVersion', [
-  'version', function(version) {
-    return function(scope, elm, attrs) {
-      return elm.text(version);
-    };
-  }
-]);
+angular.module('app.directives', ['app.services']);
 'use strict';
 /* Filters
 */
-angular.module('app.filters', []).filter('interpolate', [
-  'version', function(version) {
-    return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    };
-  }
-]);
+angular.module('app.filters', []);
 'use strict';
 /* Sevices
 */
-angular.module('app.services', []).factory('version', function() {
-  return "0.1";
-});
+angular.module('app.services', []);

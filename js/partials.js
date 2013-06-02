@@ -1,46 +1,65 @@
 angular.module('partials', [])
 .run(['$templateCache', function($templateCache) {
+  return $templateCache.put('/partials/jobs.html', [
+'',
+'<div ng-controller="JobsController" class="jobs">',
+'  <form ng-submit="findJobs()" class="form-horizontal">',
+'    <div class="control-group">',
+'      <label class="control-label">Skills</label>',
+'      <div class="controls">',
+'        <input type="text" ng-model="skills" class="span4">',
+'      </div>',
+'    </div>',
+'    <div class="control-group">',
+'      <label class="control-label">Type</label>',
+'      <div class="controls">',
+'        <select multiple="multiple" ng-model="type" class="input-medium">',
+'          <option>Hourly</option>',
+'          <option>Fixed</option>',
+'        </select>',
+'      </div>',
+'    </div>',
+'    <div class="control-group">',
+'      <div class="controls">',
+'        <button type="submit" class="btn btn-large btn-primary input-large">',
+'          <i class=\'icon-search\'></i>',
+'          Find',
+'        </button>',
+'      </div>',
+'    </div>',
+'  </form>',
+'  <div class="results">',
+'    <div class="item">',
+'      <div class="badges"><span class="badge">Fixed</span><span>&nbsp;</span><span class="badge badge-success">100$</span><span>&nbsp;</span><span class="badge badge-info">less 1 week</span><a href="#" class="btn btn-warning btn-mini pull-right">',
+'          <i class=\'icon-share-alt\'></i>',
+'          Go</a></div>',
+'      <div class="description">I have source code for an iOS slot machine game. I am looking to ‘reskin’ the game entirely by replacing symbol design, buttons, sounds, and an ‘unlock payout’ screen which is used to facilitate in-app purchases. \n\nI am looking for a contract with a fixed price, not an hourly wage. This is non-negotiable. \n\n\nThe resource folder contains approximately 30 graphics. I have a specific idea of what I want for many of the images – however there are several where I am open to ...</div>',
+'    </div>',
+'    <div class="item">',
+'      <div class="badges"><span class="badge">Hourly</span><span>&nbsp;</span><span class="badge badge-success">40$/h</span><span>&nbsp;</span><span class="badge badge-info">more 6 monthes</span><a href="#" class="btn btn-warning btn-mini pull-right">',
+'          <i class=\'icon-share-alt\'></i>',
+'          Go</a></div>',
+'      <div class="description">I have source code for an iOS slot machine game. I am looking to ‘reskin’ the game entirely by replacing symbol design, buttons, sounds, and an ‘unlock payout’ screen which is used to facilitate in-app purchases ...</div>',
+'    </div>',
+'    <div class="item">',
+'      <div class="badges"><span class="badge">Fixed</span><span>&nbsp;</span><span class="badge badge-success">100$</span><span>&nbsp;</span><span class="badge badge-info">less 1 week</span><a href="#" class="btn btn-warning btn-mini pull-right">',
+'          <i class=\'icon-share-alt\'></i>',
+'          Go</a></div>',
+'      <div class="description">I have source code for an iOS slot machine game. I am looking to ‘reskin’ the game entirely by replacing symbol design ...</div>',
+'    </div>',
+'  </div>',
+'  <ul class="pager">',
+'    <li class="previous"><a href="#">&larr; Older</a></li>',
+'    <li class="next disabled"><a href="#">Newer &rarr;</a></li>',
+'  </ul>',
+'</div>',''].join("\n"));
+}])
+.run(['$templateCache', function($templateCache) {
   return $templateCache.put('/partials/nav.html', [
 '',
 '<ul class="nav">',
-'  <li ng-class="getClass(\'/todo\')"><a ng-href="#/todo">todo</a></li>',
-'  <li ng-class="getClass(\'/view1\')"><a ng-href="#/view1">view1</a></li>',
-'  <li ng-class="getClass(\'/view2\')"><a ng-href="#/view2">view2</a></li>',
+'  <li ng-class="getClass(\'/jobs\')"><a ng-href="#/jobs">',
+'      <i class=\'icon-briefcase\'></i>',
+'      Jobs</a></li>',
 '</ul>',''].join("\n"));
-}])
-.run(['$templateCache', function($templateCache) {
-  return $templateCache.put('/partials/partial1.html', [
-'',
-'<p>This is the partial for view 1.</p>',''].join("\n"));
-}])
-.run(['$templateCache', function($templateCache) {
-  return $templateCache.put('/partials/partial2.html', [
-'',
-'<p>This is the partial for view 2.</p>',
-'<p>',
-'  Showing of \'interpolate\' filter:',
-'  {{ \'Current version is v%VERSION%.\' | interpolate }}',
-'</p>',''].join("\n"));
-}])
-.run(['$templateCache', function($templateCache) {
-  return $templateCache.put('/partials/todo.html', [
-'',
-'<div ng-app="ng-app">',
-'  <h2>Todo</h2>',
-'  <div ng-controller="TodoCtrl"><span>{{remaining()}} of {{todos.length}} remaining</span> [<a href="" ng-click="archive()">archive</a>]',
-'    <ul class="unstyled">',
-'      <li ng-repeat="todo in todos">',
-'        <label class="checkbox inline">',
-'          <input type="checkbox" ng-model="todo.done"><span class="done{{todo.done}}">{{todo.text}}</span>',
-'        </label>',
-'      </li>',
-'    </ul>',
-'    <form ng-submit="addTodo()" class="form-inline">',
-'      <p>',
-'        <input type="text" ng-model="todoText" size="30" placeholder="add new todo here">',
-'        <input type="submit" value="add" class="btn btn-primary">',
-'      </p>',
-'    </form>',
-'  </div>',
-'</div>',''].join("\n"));
 }]);
