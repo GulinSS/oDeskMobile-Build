@@ -35,24 +35,15 @@ angular.module('app.controllers', []).controller('AppCtrl', [
   }
 ]).controller('JobsController', [
   '$scope', 'FindRest', function($scope, FindRest) {
-    var iAmFinding, page;
+    var page;
 
     page = 1;
-    iAmFinding = false;
     $scope.nextPage = function() {
-      if (iAmFinding) {
-        return;
-      }
-      if ($scope.results === void 0) {
-        return;
-      }
-      iAmFinding = true;
       page++;
       return FindRest.find($scope.type, $scope.skills, page).then(function(values) {
-        values.forEach(function(value) {
+        return values.forEach(function(value) {
           return $scope.results.push(value);
         });
-        return iAmFinding = false;
       });
     };
     return $scope.findJobs = function() {

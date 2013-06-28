@@ -2,7 +2,7 @@ angular.module('partials', [])
 .run(['$templateCache', function($templateCache) {
   return $templateCache.put('/partials/jobs.html', [
 '',
-'<div ng-controller="JobsController" app-scroll-page="nextPage" class="jobs">',
+'<div ng-controller="JobsController" class="jobs">',
 '  <div class="row">',
 '    <div class="columns small-centered small-11">',
 '      <form ng-submit="findJobs()" class="panel">',
@@ -51,6 +51,14 @@ angular.module('partials', [])
 '          <i class=\'icon-share-alt\'></i>',
 '          Go</a><span class="label label-inverse">{{ jobSearchResult.type }}</span><span ng-show="jobSearchResult.budget" class="label success">{{ jobSearchResult.budget }}</span><span ng-show="jobSearchResult.busy" class="label alert">{{ jobSearchResult.busy }}</span><span ng-show="jobSearchResult.time" class="label secondary">{{ jobSearchResult.time }}</span></div>',
 '      <div class="description">{{ jobSearchResult.description }}</div>',
+'    </div>',
+'  </div>',
+'  <div class="row">',
+'    <div class="columns large-9 large-centered">',
+'      <button ng-show="results" ng-click="nextPage()" class="button expand radius secondary">',
+'        <i class=\'icon-download icon-large\'></i>',
+'        Load more results',
+'      </button>',
 '    </div>',
 '  </div>',
 '</div>',''].join("\n"));
