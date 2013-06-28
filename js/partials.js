@@ -2,7 +2,7 @@ angular.module('partials', [])
 .run(['$templateCache', function($templateCache) {
   return $templateCache.put('/partials/jobs.html', [
 '',
-'<div ng-controller="JobsController" class="jobs">',
+'<div ng-controller="JobsController" app-scroll-page="nextPage" class="jobs">',
 '  <div class="row">',
 '    <div class="columns small-centered small-11">',
 '      <form ng-submit="findJobs()" class="panel">',
@@ -37,7 +37,7 @@ angular.module('partials', [])
 '        <div class="row">',
 '          <div class="columns small-8 small-centered">',
 '            <button type="submit" class="button expand radius success">',
-'              <i class=\'icon-search\'></i>',
+'              <i class=\'icon-search icon-large\'></i>',
 '              Find',
 '            </button>',
 '          </div>',

@@ -34,10 +34,30 @@ angular.module('app.controllers', []).controller('AppCtrl', [
     };
   }
 ]).controller('JobsController', [
-  '$scope', 'FindRest', 'JobSearchResult', function($scope, FindRest, JobSearchResult) {
+  '$scope', 'FindRest', function($scope, FindRest) {
+    var iAmFinding, page;
+
+    page = 1;
+    iAmFinding = false;
+    $scope.nextPage = function() {
+      if (iAmFinding) {
+        return;
+      }
+      if ($scope.results === void 0) {
+        return;
+      }
+      iAmFinding = true;
+      page++;
+      return FindRest.find($scope.type, $scope.skills, page).then(function(values) {
+        values.forEach(function(value) {
+          return $scope.results.push(value);
+        });
+        return iAmFinding = false;
+      });
+    };
     return $scope.findJobs = function() {
-      return FindRest.find($scope.type, $scope.skills).then(function(results) {
-        return $scope.results = results;
+      return FindRest.find($scope.type, $scope.skills, page).then(function(values) {
+        return $scope.results = values;
       });
     };
   }
@@ -45,7 +65,40 @@ angular.module('app.controllers', []).controller('AppCtrl', [
 'use strict';
 /* Directives
 */
-angular.module('app.directives', []);
+angular.module('app.directives', []).directive("appLoading", [
+  "AppLoading", "$rootScope", function(AppLoading, $rootScope) {
+    return function(scope, element) {
+      $rootScope.$on(AppLoading.eventNames.show, function() {
+        return element.css({
+          marginBottom: "0px"
+        });
+      });
+      return $rootScope.$on(AppLoading.eventNames.hide, function() {
+        return element.css({
+          marginBottom: "-50px"
+        });
+      });
+    };
+  }
+]).directive("appScrollPage", [
+  "$window", function($window) {
+    return function(scope, element, attrs) {
+      var appScrollPage;
+
+      appScrollPage = scope.$eval(attrs.appScrollPage);
+      return $window.onscroll = function() {
+        var deviceHeight, height, scrollTop;
+
+        scrollTop = $window.pageYOffset || $window.document.documentElement.scrollTop;
+        height = $window.document.height;
+        deviceHeight = $window.document.documentElement.clientHeight;
+        if ((scrollTop + deviceHeight) > height) {
+          return appScrollPage();
+        }
+      };
+    };
+  }
+]);
 'use strict';
 /* Filters
 */
@@ -79,13 +132,26 @@ angular.module('app.services.models.result', []).factory("JobSearchResult", [
 'use strict';
 /* Sevices
 */
-angular.module('app.services', []);
+angular.module('app.services', []).service("AppLoading", [
+  "$rootScope", function($rootScope) {
+    this.eventNames = {
+      show: "appLoading-show",
+      hide: "appLoading-hide"
+    };
+    this.show = function() {
+      return $rootScope.$emit(this.eventNames.show);
+    };
+    return this.hide = function() {
+      return $rootScope.$emit(this.eventNames.hide);
+    };
+  }
+]);
 'use strict';
 /* Sevices
 */
 angular.module('app.services.rest', []).service("FindRest", [
-  "JobSearchResult", "$http", function(JobSearchResult, $http) {
-    var getBudget, searchJobsUrl;
+  "JobSearchResult", "AppLoading", "$http", function(JobSearchResult, AppLoading, $http) {
+    var getBudget, getPage, searchJobsUrl;
 
     searchJobsUrl = "https://www.odesk.com/api/profiles/v1/search/jobs.json";
     getBudget = function(one) {
@@ -105,18 +171,25 @@ angular.module('app.services.rest', []).service("FindRest", [
         throw new Error("Unknown type of job");
       }
     };
-    return this.find = function(type, skills) {
-      var promise;
+    getPage = function(page) {
+      var from, multiplier;
 
-      promise = $http({
-        method: "GET",
-        url: searchJobsUrl,
-        params: {
-          qs: skills != null ? skills : skills = "",
-          t: type != null ? type : type = ""
+      multiplier = 20;
+      from = (page - 1) * multiplier;
+      return from + ";" + multiplier;
+    };
+    return this.find = function(type, skills, page) {
+      var promise, success;
+
+      if (page == null) {
+        page = 1;
+      }
+      AppLoading.show();
+      success = function(response) {
+        AppLoading.hide();
+        if (response.data.jobs.job === void 0) {
+          return [];
         }
-      });
-      return promise.then(function(response) {
         return response.data.jobs.job.map(function(one) {
           return new JobSearchResult({
             link: "https://odesk.com/jobs/" + one.ciphertext,
@@ -127,6 +200,19 @@ angular.module('app.services.rest', []).service("FindRest", [
             description: one.op_description
           });
         });
+      };
+      promise = $http({
+        method: "GET",
+        url: searchJobsUrl,
+        params: {
+          qs: skills != null ? skills : skills = "",
+          t: type != null ? type : type = "",
+          page: getPage(page)
+        }
+      });
+      return promise.then(success, function() {
+        AppLoading.hide();
+        return alert("Connection error! Check your Internet connection.");
       });
     };
   }
