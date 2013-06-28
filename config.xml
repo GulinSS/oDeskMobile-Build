@@ -17,4 +17,10 @@
         Hardeep Shoker 
     </author>
 
+    <preference value="2.9.0" name="phonegap-version"/>
+
+    <feature name="http://api.phonegap.com/1.0/network"/>
+
+    <access origin="https://odesk.com" />
+
 </widget>
